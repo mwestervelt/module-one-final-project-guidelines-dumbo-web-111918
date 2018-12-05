@@ -1,4 +1,4 @@
-class UserCharity < ActiveRecord::Base
+class UserCause < ActiveRecord::Base
   belongs_to :user
-  belongs_to :charity
+  belongs_to :cause
 end

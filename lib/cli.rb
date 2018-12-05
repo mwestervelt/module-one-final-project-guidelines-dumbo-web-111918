@@ -1,6 +1,7 @@
+require'pry'
 
 def welcome
-  puts "Welcome to the app!"
+  puts "Welcome to the Charity Finder app!"
 end
 
 def name_prompt
@@ -8,23 +9,65 @@ def name_prompt
   name = prompt.ask('What is your name?').chomp
   name = User.create(name: "#{name}")
 
+
 end
 
-def interest_prompt
+def interest_prompt(user)
   prompt = TTY::Prompt.new
-  choices = Cause.all.collect {|c| c.name}
+  choices = Cause.all.collect {|c| {"#{c.name}" => c}}
   interest = prompt.select('Choose your area of interest', choices)
+  UserCause.create(user: user, cause: interest)
+  puts "You have chosen to support #{interest.name}!"
+    #what next - go home?
 end
 
-def show_charities
-  #user inputs 'interest' which is the same as the UserCause instance name.
-  #how to pull Charity instance name from that 
+def users_id(name)
+  User.find_by(name: name).id
 end
 
-def find_charity
-  #given existing cause, return list of related charities
-  CharityCause.cause.find
+def view_cause(user)
+  if user.causes == []
+  "You haven't chosen a cause to support yet!"
+  #return them to home
+else
+  "Your current cause is #{user.first_cause}"
+  end
 end
+
+def delete_user(user)
+  puts "username:#{user.name}"
+  puts "your current cause is #{user.first_cause}"
+  prompt = TTY::Prompt.new
+  answer = prompt.yes?("Are you sure you want to delete profile?")
+    if answer == true
+      user.destroy
+    end
+end
+
+def home(user)
+  prompt = TTY::Prompt.new
+  selection = prompt.select("What would you like to do?", ["View current cause", "Choose new cause", "Delete profile", "Exit"])
+    if selection == "View current cause"
+      puts view_cause(user)
+    elsif selection == "Choose new cause"
+      interest_prompt(user)
+    elsif selection == "Delete profile"
+      delete_user(user)
+    end
+end
+
+
+
+
+# def show_charities
+#   #user inputs 'interest' which is the same as the UserCause instance name.
+#   #how to pull Charity instance name from that 
+# end
+
+# def find_charity
+#   #given existing cause, return list of related charities
+#   CharityCause.cause.find
+# end
 
 #def view_all_charities
 #end
