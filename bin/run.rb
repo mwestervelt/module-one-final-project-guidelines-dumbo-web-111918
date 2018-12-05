@@ -10,8 +10,9 @@ user = name_prompt
 
 loop do
   ho = home(user)
-
-  if ho == user
+  home(user)
+# binding.pry
+  if ho == "delete"
     break
   end
   #binding.pry

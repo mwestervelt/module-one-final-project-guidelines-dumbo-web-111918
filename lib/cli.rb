@@ -30,18 +30,19 @@ def view_cause(user)
   "You haven't chosen a cause to support yet!"
   #return them to home
 else
-  "Your current cause is #{user.first_cause}"
+  "Your current cause is #{user.last_cause}"
   end
 end
 
 def delete_user(user)
   puts "username:#{user.name}"
-  puts "your current cause is #{user.first_cause}"
+  puts "your current cause is #{user.last_cause}"
   prompt = TTY::Prompt.new
   answer = prompt.yes?("Are you sure you want to delete profile?")
     if answer == true
       user.destroy
     end
+    "delete"
 end
 
 def home(user)
