@@ -92,7 +92,6 @@ def delete_user(user)
 end
 
 def home(user)
-
   user.reload
   if user.causes.size >= 1
     system "clear"
