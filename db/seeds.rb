@@ -1,6 +1,6 @@
 
 mariel = User.create(name: "mariel westervelt")
-user1 = User.create(name: "samuel prada")
+sam = User.create(name: "samuel prada")
 
 water = Cause.create(name: "water")
 children = Cause.create(name: "children")
