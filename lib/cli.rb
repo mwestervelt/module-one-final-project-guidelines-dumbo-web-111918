@@ -1,23 +1,27 @@
 require'pry'
 
+
 def welcome
   puts "Welcome to the Charity Finder app!"
+  sleep 2
 end
 
 def name_prompt
+  system "clear"
   prompt = TTY::Prompt.new
   name = prompt.ask('What is your name?').chomp
   name = User.create(name: "#{name}")
-
-
 end
 
 def interest_prompt(user)
+  system "clear"
   prompt = TTY::Prompt.new
   choices = Cause.all.collect {|c| {"#{c.name}" => c}}
-  interest = prompt.select('Choose your area of interest', choices)
+  interest = prompt.select('Choose your area of interest', choices, per_page: 13)
   UserCause.create(user: user, cause: interest)
   puts "You have chosen to support #{interest.name}!"
+  # puts "You might be interested in supporting #{cause.charity}"
+  # puts "#{cause.mission}"
     #what next - go home?
 end
 
@@ -26,37 +30,64 @@ def users_id(name)
 end
 
 def view_cause(user)
-  if user.causes == []
-  "You haven't chosen a cause to support yet!"
-  #return them to home
-else
-  "Your current cause is #{user.last_cause}"
+  if user.causes.size == 0
+    puts "You haven't chosen a cause to support yet!"
+     #return them to home
+  elsif user.causes.size > 0
+      puts "Your current cause is: #{user.last_cause.name}"
+      sleep 2
+      puts "Locating charities that match your interest..."
+      sleep 2
+      puts "Charity found! You might be interested in supporting:"
+      puts "----------- #{user.last_cause.charity} -----------"
+      puts "Mission statement: #{user.last_cause.mission}"
   end
+  prompt = TTY::Prompt.new
+  prompt.keypress("Press any key to continue.")
 end
 
 def delete_user(user)
-  puts "username:#{user.name}"
-  puts "your current cause is #{user.last_cause}"
+  system "clear"
+  puts "Username: #{user.name}"
+  # puts "Your current cause is #{user.last_cause}"
   prompt = TTY::Prompt.new
   answer = prompt.yes?("Are you sure you want to delete profile?")
     if answer == true
+      sleep 2
+      puts "You have been deleted."
+      user.user_causes.destroy
       user.destroy
-    end
-    "delete"
+      prompt = TTY::Prompt.new
+      prompt.keypress("Press any key to continue.")
+      system "clear"
+      welcome
+      sleep 2
+      user = name_prompt
+    else
+      puts "Ok"
+      sleep 2
+  end
 end
 
 def home(user)
+  system "clear"
   prompt = TTY::Prompt.new
-  selection = prompt.select("What would you like to do?", ["View current cause", "Choose new cause", "Delete profile", "Exit"])
-    if selection == "View current cause"
-      puts view_cause(user)
-    elsif selection == "Choose new cause"
-      interest_prompt(user)
-    elsif selection == "Delete profile"
-      delete_user(user)
-    end
+  selection = prompt.select("What would you like to do?", ["Choose new cause", "Find a charity", "Delete profile", "Exit"])
+  selection
+    # if selection == "View current cause"
+    #   view_cause(user)
+    #
+    # elsif selection == "Choose new cause"
+    #   interest_prompt(user)
+    #
+    # elsif selection == "Delete profile"
+    #   delete_user(user)
+    #   welcome
+    #   user = name_prompt
+    # elsif selection == "Exit"
+    #   f = "break"
+    # end
 end
-
 
 
 
