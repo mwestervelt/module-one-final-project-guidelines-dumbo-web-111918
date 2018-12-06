@@ -17,8 +17,12 @@ loop do
   elsif ho == "Choose new cause"
     interest_prompt(user)
   elsif ho == "Delete profile"
-    delete_user(user)
+    k = delete_user(user)
+    if k == "d"
+    user = name_prompt
+    end
   elsif ho == "Exit"
+    system "clear"
     puts "Bye bye!"
     break
   end

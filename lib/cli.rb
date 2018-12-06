@@ -1,4 +1,8 @@
 require'pry'
+require'colorized_string'
+require'colorize'
+require'rainbow'
+
 
 
 def welcome
@@ -9,6 +13,7 @@ end
 def name_prompt
   system "clear"
   prompt = TTY::Prompt.new
+  puts "CharityMatch"
   puts "What is your username?"
   name = prompt.ask('>')
   name = User.create(name: "#{name}")
@@ -32,18 +37,32 @@ end
 # end
 
 def view_cause(user)
-  if user.causes.size == 0
-    puts "You haven't chosen a cause to support yet!"
-     #return them to home
-  elsif user.causes.size > 0
       puts "Your current cause is: #{user.last_cause.name}"
+      sleep 2
+      puts "Searching..."
       sleep 2
       puts "Locating charities that match your interest..."
       sleep 2
       puts "Charity found! You might be interested in supporting:"
-      puts "----------- #{user.last_cause.charity} -----g------"
+      puts ""
+      puts "------------------------- #{user.last_cause.charity} -------------------------"
+      puts ""
       puts "Mission statement: #{user.last_cause.mission}"
-  end
+      puts ""
+      puts "-------------------------------------------------------------------------"
+      sleep 2
+      puts Rainbow("Congrats, you're a great person! 😇").red.bright.blink
+      puts Rainbow("Congrats, you're a great person! 😇").indianred.bright
+      puts Rainbow("Congrats, you're a great person! 😇").orange.bright
+      puts Rainbow("Congrats, you're a great person! 😇").yellow.bright
+      puts Rainbow("Congrats, you're a great person! 😇").olive.bright
+      puts Rainbow("Congrats, you're a great person! 😇").green.bright
+      puts Rainbow("Congrats, you're a great person! 😇").cyan.bright
+      puts Rainbow("Congrats, you're a great person! 😇").blue.bright
+      puts Rainbow("Congrats, you're a great person! 😇").purple.bright
+      puts Rainbow("Congrats, you're a great person! 😇").magenta.bright
+      puts " "
+  sleep 2
   prompt = TTY::Prompt.new
   prompt.keypress("Press any key to continue.")
 end
@@ -56,7 +75,7 @@ def delete_user(user)
   answer = prompt.yes?("Are you sure you want to delete profile?")
     if answer == true
       sleep 2
-      puts "You have been deleted."
+      puts "Lame. You have been deleted. "
       user.user_causes.destroy
       user.destroy
       prompt = TTY::Prompt.new
@@ -64,35 +83,37 @@ def delete_user(user)
       system "clear"
       welcome
       sleep 2
-      user = name_prompt
+      "d"
     else
-      puts "Ok"
+      puts "Ok, cool."
       sleep 2
+      "k"
   end
 end
 
 def home(user)
-  system "clear"
-  prompt = TTY::Prompt.new
-  selection = prompt.select("What would you like to do?", ["Choose new cause", "Find a charity", "Delete profile", "Exit"])
-  selection
-    # if selection == "View current cause"
-    #   view_cause(user)
-    #
-    # elsif selection == "Choose new cause"
-    #   interest_prompt(user)
-    #
-    # elsif selection == "Delete profile"
-    #   delete_user(user)
-    #   welcome
-    #   user = name_prompt
-    # elsif selection == "Exit"
-    #   f = "break"
-    # end
+
+  user.reload
+  if user.causes.size >= 1
+    system "clear"
+    prompt = TTY::Prompt.new
+    puts "CharityMatch Home: to get matched with a Charity, first choose a cause you would like to support -"
+    selection = prompt.select("What would you like to do, #{user.name}?", ["Choose new cause", "Find a charity", "Delete profile", "Exit"])
+    selection
+  else
+    system "clear"
+    prompt = TTY::Prompt.new
+    puts "CharityMatch Home: to get matched with a Charity, first choose a cause you would like to support -"
+    selection = prompt.select("What would you like to do, #{user.name}?", ["Choose new cause", "Delete profile", "Exit"])
+    selection
+ end
 end
 
-
-
+#
+# Giphy::Configuration.configure do |config|
+#   config.version = THE_API_VERSION
+#   config.api_key = YOUR_API_KEY
+# end
 
 
 # def show_charities
