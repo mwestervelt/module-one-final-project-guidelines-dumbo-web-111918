@@ -11,19 +11,16 @@ user = name_prompt
 
 loop do
   ho = home(user)
-
   if ho == "Find a charity"
-    view_cause(user)
-
+   view_cause(user)
   elsif ho == "Choose new cause"
     interest_prompt(user)
-
   elsif ho == "Delete profile"
     delete_user(user)
   elsif ho == "Exit"
     puts "Bye bye!"
-    # binding.pry
-    #wait
+    welcome
+    user = name_prompt
     break
   end
 

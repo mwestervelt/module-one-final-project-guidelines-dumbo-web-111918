@@ -91,6 +91,8 @@ end
 
 
 
+
+
 # def show_charities
 #   #user inputs 'interest' which is the same as the UserCause instance name.
 #   #how to pull Charity instance name from that 
