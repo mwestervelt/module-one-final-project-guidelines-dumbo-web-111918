@@ -2,15 +2,17 @@ require'pry'
 
 
 def welcome
-  puts "Welcome to the Charity Finder app!"
+  puts "Welcome to CharityMatch!"
   sleep 2
 end
 
 def name_prompt
   system "clear"
   prompt = TTY::Prompt.new
-  name = prompt.ask('What is your name?').chomp
+  puts "What is your username?"
+  name = prompt.ask('>')
   name = User.create(name: "#{name}")
+
 end
 
 def interest_prompt(user)
@@ -25,9 +27,9 @@ def interest_prompt(user)
     #what next - go home?
 end
 
-def users_id(name)
-  User.find_by(name: name).id
-end
+# def users_id(name)
+#   User.find_by(name: name).id
+# end
 
 def view_cause(user)
   if user.causes.size == 0
@@ -39,7 +41,7 @@ def view_cause(user)
       puts "Locating charities that match your interest..."
       sleep 2
       puts "Charity found! You might be interested in supporting:"
-      puts "----------- #{user.last_cause.charity} -----------"
+      puts "----------- #{user.last_cause.charity} -----g------"
       puts "Mission statement: #{user.last_cause.mission}"
   end
   prompt = TTY::Prompt.new

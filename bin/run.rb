@@ -9,6 +9,7 @@ system "clear"
 welcome
 user = name_prompt
 
+
 loop do
   ho = home(user)
   if ho == "Find a charity"
@@ -19,8 +20,6 @@ loop do
     delete_user(user)
   elsif ho == "Exit"
     puts "Bye bye!"
-    welcome
-    user = name_prompt
     break
   end
 
